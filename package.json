@@ -1,0 +1,22 @@
+{
+  "name": "liri",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Contrapuntist/liri.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Contrapuntist/liri/issues"
+  },
+  "homepage": "https://github.com/Contrapuntist/liri#readme",
+  "dependencies": {
+    "node-spotify-api": "^1.0.5"
+  }
+}
