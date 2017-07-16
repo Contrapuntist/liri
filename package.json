@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/Contrapuntist/liri#readme",
   "dependencies": {
-    "node-spotify-api": "^1.0.5"
+    "node-spotify-api": "^1.0.5",
+    "request": "^2.81.0",
+    "stream-browserify": "^2.0.1",
+    "twitter": "^1.7.1"
   }
 }
