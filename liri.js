@@ -42,7 +42,7 @@ function joinString() {
 }
 
 function getSong (song) {
-    console.log('get song reached with song ' + song);
+    // console.log('get song reached with song ' + song);
     spotify
     .search({ 
         type: 'track', 
@@ -52,7 +52,6 @@ function getSong (song) {
         if (response.tracks.total === 0) { 
             console.log ('invalid song title');
         } else {
-            console.log(response);
             console.log('Song: ' + response.tracks.items[0].name);
             console.log('Artist(s): ' + response.tracks.items[0].artists[0].name);
             console.log('Album: ' + response.tracks.items[0].album.name);
@@ -62,7 +61,8 @@ function getSong (song) {
     // * The album that the song is from
     })
     .catch(function(err) {
-        console.log(err);
+        console.log(err); 
+        throw err;
     });
 }
 
@@ -83,15 +83,16 @@ function getMovie(filmTitle) {
         } else if (error) {
           
             console.log(error);
-        
+            throw error;
         } else { 
 
             console.log('Movie Title: ' + JSON.parse(body).Title);
             console.log('Year Released: ' + JSON.parse(body).Year);
             console.log('Movie Plot: ' + JSON.parse(body).Plot);
             console.log('Actors: ' + JSON.parse(body).Actors);
-            console.log('IMDB rate: ' + JSON.parse(body).imdbRating);
-        
+            console.log('IMDB Rating: ' + JSON.parse(body).imdbRating);
+            
+            //Condition to handle error when Rotten Tomatoes not included 
             if (JSON.parse(body).Ratings.includes('"Source":"Rotten Tomatoes"')) {
                 console.log('Rotten Tomatoes Rating: ' + JSON.parse(body).Ratings[1].Value);
             } else { 
