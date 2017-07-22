@@ -15,16 +15,14 @@ var omdbSearch = '';
 var inputArray = process.argv;
 
 function getTweets() { 
-    var params = {screen_name: 'contrapuntist'};
 
+    var params = {screen_name: 'contrapuntist'};
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) { 
             for (var i = 0; i < tweets.length; i++)
-            console.log(tweets[i].text);
-            
-            // console.log(response);
+            console.log(tweets[i].text);            
         }
-        // console.log(tweets);
+        
     });
 }
 
@@ -32,7 +30,7 @@ function joinString() {
     var stringArray = [];
     for (var i = 3; i < inputArray.length; i++ ) {
         stringArray.push(inputArray[i]);    
-    } 
+    }  
     // console.log(stringArray); 
     if (process.argv[2] === 'spotify-this-song') { 
         spotifySong = stringArray.join(' ');
@@ -49,12 +47,17 @@ function getSong (song) {
     .search({ 
         type: 'track', 
         query: song })
-    .then(function(response) {
-        console.log(response);
-        console.log('Song: ' + response.tracks.items[0].name);
-        console.log('Artist(s): ' + response.tracks.items[0].artists[0].name);
-        console.log('Album: ' + response.tracks.items[0].album.name);
-        console.log('Preview Url: ' + response.tracks.items[0].preview_url);
+    .then(function(response) { 
+
+        if (response.tracks.total === 0) { 
+            console.log ('invalid song title');
+        } else {
+            console.log(response);
+            console.log('Song: ' + response.tracks.items[0].name);
+            console.log('Artist(s): ' + response.tracks.items[0].artists[0].name);
+            console.log('Album: ' + response.tracks.items[0].album.name);
+            console.log('Preview Url: ' + response.tracks.items[0].preview_url); 
+        }
     // * A preview link of the song from Spotify
     // * The album that the song is from
     })
@@ -64,7 +67,7 @@ function getSong (song) {
 }
 
 function getMovie(filmTitle) { 
-    console.log('get movie reached');
+    
     request(filmTitle, function (error, response, body) { 
 
         // console.log('error:', error); // Print the error if one occurred 
@@ -72,9 +75,8 @@ function getMovie(filmTitle) {
         // console.log('body:', body); // Print the HTML for the Google homepage.  
         
         var movieCheck = JSON.parse(body).Title;
-        console.log(movieCheck);
-        // response.statusCode === '200' &&
-        if (movieCheck === 'undefined') { 
+        
+        if (movieCheck === undefined) { 
         
             console.log ('Not a valid movie title');  
         
@@ -110,21 +112,23 @@ if (process.argv[2] === 'my-tweets') {
 } else if (process.argv[2] === 'spotify-this-song') { 
 
     // console.log ('time to spotify');
-    joinString()
-    getSong(spotifySong);
+    if (inputArray.length < 4 ) { 
+        spotifySong = 'The Sign Ace of Base';
+        getSong(spotifySong);
+    } else {
+        joinString()
+        getSong(spotifySong);
+    }
 
 } else if (process.argv[2] === 'movie-this') {
     // Contingency needed if TV show entered? i.e. The Big Bang Theory 
-    // console.log ('what movie?');    
     
     if (inputArray.length < 4 ) { 
         movieTitle = 'mr+nobody';
-        console.log('mr nobody reached');
         omdbSearch = "http://www.omdbapi.com/?apikey=40e9cece&t=" + movieTitle; 
         getMovie(omdbSearch);
     } else {
         joinString();
-        console.log(omdbSearch);
         getMovie(omdbSearch);
     }
     
@@ -135,7 +139,9 @@ if (process.argv[2] === 'my-tweets') {
 
         // If the code experiences any errors it will log the error to the console.
         if (error) {
+        
             return console.log(error);
+        
         } else { 
             // console.log(data);
             var dataArr = data.split(",");
@@ -144,6 +150,9 @@ if (process.argv[2] === 'my-tweets') {
 
             // console.log(dataArr);
             
+            // NOTE: only accounted for what originally came with file.  
+            // If we needed to account for other commands, I'd simply modify condition
+            // to account for other commands 
             if (doThis === 'spotify-this-song') { 
                 getSong(searchThis);
             } else {
