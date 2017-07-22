@@ -50,6 +50,7 @@ function getSong (song) {
         type: 'track', 
         query: song })
     .then(function(response) {
+        console.log(response);
         console.log('Song: ' + response.tracks.items[0].name);
         console.log('Artist(s): ' + response.tracks.items[0].artists[0].name);
         console.log('Album: ' + response.tracks.items[0].album.name);
